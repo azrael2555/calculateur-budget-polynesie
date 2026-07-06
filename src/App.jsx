@@ -10,24 +10,24 @@ const PRIX = {
     Autre: { 'Économique': 1600, 'Premium Économique': 2800, 'Affaires': 5000 },
   },
   hebergement: {
-    'Hôtel 3*': 180,
-    'Hôtel 4*': 320,
-    'Hôtel 5*': 550,
-    'Pension familiale': 110,
-    'Location vacances': 150,
+    'Hôtel 3*': 200,
+    'Hôtel 4*': 350,
+    'Hôtel 5*': 600,
+    'Pension familiale': 130,
+    'Location vacances': 170,
   },
-  overwaterBungalow: 550,
-  locationVoiture: { Compact: 60, SUV: 85, '4x4': 110 },
-  transfertsInterIles: { Bateau: 80, 'Avion (Air Tahiti)': 700, Aucun: 0 },
-  restauration: { 'Économique': 30, Moyen: 60, Luxe: 120 },
-  dinerSpecial: 100,
+  overwaterBungalow: 650,
+  locationVoiture: { Compact: 65, SUV: 90, '4x4': 120 },
+  transfertsInterIles: { Bateau: 80, 'Avion (Air Tahiti)': 750, Aucun: 0 },
+  restauration: { 'Économique': 35, Moyen: 65, Luxe: 130 },
+  dinerSpecial: 110,
   activites: {
-    'Plongée sous-marine': 90,
+    'Plongée sous-marine': 95,
     'Excursion en 4x4': 110,
     'Tour en bateau à moteur': 100,
     'Visite culturelle': 40,
     Randonnée: 50,
-    Spa: 120,
+    Spa: 130,
   },
   excursionMoyenne: 80,
   specificitesPolynesiennes: {
@@ -465,6 +465,17 @@ function App() {
             </ul>
           </div>
         </div>
+      </div>
+
+      {/* Barre de total collée en bas — visible sur mobile uniquement */}
+      <div className="mobile-total-bar">
+        <div className="mtb-info">
+          <span className="mtb-label">Budget total estimé</span>
+          <span className="mtb-per">
+            ≈ {Math.round(budget.total / form.participants).toLocaleString()} € / personne
+          </span>
+        </div>
+        <span className="mtb-value">{budget.total.toLocaleString()} €</span>
       </div>
     </div>
   )

@@ -1,7 +1,8 @@
 /* ===========================================================
    Calculateur de Budget Polynésie — thème "Lagon"
-   Design moderne. Les anciennes classes utilitaires sont
-   conservées mais retravaillées avec une palette turquoise.
+   Approche MOBILE-FIRST : les styles de base ciblent le mobile,
+   les media queries (min-width) enrichissent le desktop.
+   Les anciennes classes utilitaires sont conservées.
    =========================================================== */
 
 :root {
@@ -22,6 +23,7 @@
   --radius: 16px;
   --shadow: 0 10px 30px -12px rgba(11, 111, 126, .28);
   --shadow-sm: 0 2px 8px rgba(11, 111, 126, .10);
+  --touch: 48px;            /* hauteur mini des cibles tactiles */
 }
 
 * { box-sizing: border-box; }
@@ -31,29 +33,29 @@ body {
   margin: 0;
   padding: 0;
   color: var(--ink);
+  -webkit-text-size-adjust: 100%;
   background:
-    radial-gradient(1200px 500px at 100% -10%, #d6f3f6 0%, transparent 60%),
-    radial-gradient(1000px 400px at -10% 0%, #e8f8ea 0%, transparent 55%),
+    radial-gradient(900px 380px at 100% -10%, #d6f3f6 0%, transparent 60%),
+    radial-gradient(800px 320px at -10% 0%, #e8f8ea 0%, transparent 55%),
     linear-gradient(180deg, #f4fbfc 0%, #eef7f8 100%);
   min-height: 100vh;
 }
 
-/* ---------- Conteneur principal ---------- */
-.max-w-4xl { margin-left: auto; margin-right: auto; max-width: 74rem; }
+/* ---------- Conteneur (mobile: pleine largeur) ---------- */
+.max-w-4xl { margin: 0 auto; max-width: 100%; }
 .mx-auto { margin-left: auto; margin-right: auto; }
-.p-4 { padding: 1.5rem; }
-.bg-blue-50 { background: transparent; }        /* fond géré par le body */
+.p-4 { padding: 1rem; }
+.bg-blue-50 { background: transparent; }
 .rounded-lg { border-radius: var(--radius); }
 .shadow { box-shadow: none; }
 
+/* Espace en bas pour ne pas masquer le contenu sous la barre fixe (mobile) */
+.max-w-4xl.p-4 { padding-bottom: 92px; }
+
 /* ---------- En-tête ---------- */
-.text-3xl {
-  font-size: 2.1rem;
-  line-height: 1.15;
-  letter-spacing: -.5px;
-}
+.text-3xl { font-size: 1.55rem; line-height: 1.2; letter-spacing: -.4px; }
 .text-center { text-align: center; }
-.mb-6 { margin-bottom: 1.5rem; }
+.mb-6 { margin-bottom: 1.25rem; }
 .text-blue-800 {
   background: linear-gradient(90deg, var(--lagon-700), var(--lagon-500) 60%, var(--lagon-400));
   -webkit-background-clip: text;
@@ -62,61 +64,49 @@ body {
   color: var(--lagon-700);
 }
 
-/* ---------- Grille 2 colonnes ---------- */
+/* ---------- Grille (mobile: 1 colonne) ---------- */
 .grid { display: grid; }
-.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-@media (min-width: 768px) {
-  .md\:grid-cols-2 { grid-template-columns: 1.05fr .95fr; }
-}
-.gap-6 { gap: 1.75rem; }
+.grid-cols-1 { grid-template-columns: 1fr; }
+.md\:grid-cols-2 { grid-template-columns: 1fr; }
+.gap-6 { gap: 1.25rem; }
 
 /* ---------- Cartes ---------- */
 .bg-white {
-  background: rgba(255, 255, 255, .92);
-  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, .95);
   border: 1px solid var(--border);
 }
-.p-4.bg-white, .bg-white.p-4 { padding: 1.5rem; }
 .bg-white.rounded-lg { box-shadow: var(--shadow); }
+.bg-white.p-4, .p-4.bg-white { padding: 1.15rem; }
 
-.text-xl { font-size: 1.15rem; line-height: 1.6rem; }
-.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-xl { font-size: 1.1rem; line-height: 1.5rem; }
+.text-2xl { font-size: 1.35rem; line-height: 1.8rem; }
 .font-semibold { font-weight: 600; }
 .font-bold { font-weight: 700; }
 
 /* ---------- Titres de section ---------- */
-.mb-3 { margin-bottom: 1rem; }
-.text-blue-700 {
-  color: var(--lagon-700);
-  position: relative;
-  padding-left: .7rem;
-}
+.mb-3 { margin-bottom: .9rem; }
+.text-blue-700 { color: var(--lagon-700); position: relative; padding-left: .7rem; }
 h2.text-blue-700::before {
   content: "";
   position: absolute;
-  left: 0; top: .1em; bottom: .1em;
-  width: 4px;
-  border-radius: 4px;
+  left: 0; top: .12em; bottom: .12em;
+  width: 4px; border-radius: 4px;
   background: linear-gradient(var(--lagon-400), var(--lagon-600));
 }
-.mb-6 > h2 { display: block; }
 
 /* Séparateur léger entre sections du formulaire */
-form > .mb-6 {
-  padding-bottom: 1.25rem;
-  border-bottom: 1px dashed var(--border);
-}
+form > .mb-6 { padding-bottom: 1.1rem; border-bottom: 1px dashed var(--border); }
 form > .mb-6:last-of-type { border-bottom: none; }
 
-/* ---------- Labels & champs ---------- */
+/* ---------- Labels & champs (grandes cibles tactiles) ---------- */
 .block { display: block; }
 .mb-1 { margin-bottom: .4rem; }
 .mb-2 { margin-bottom: .6rem; }
-label { font-size: .92rem; font-weight: 500; color: var(--ink); }
+label { font-size: .95rem; font-weight: 500; color: var(--ink); }
 .w-full { width: 100%; }
-.p-2 { padding: .65rem .8rem; }
+.p-2 { padding: .8rem .9rem; }
 .border { border-width: 1px; }
-.rounded { border-radius: 10px; }
+.rounded { border-radius: 12px; }
 
 input[type=number], select, input[type=text] {
   border: 1px solid var(--border);
@@ -124,7 +114,8 @@ input[type=number], select, input[type=text] {
   box-sizing: border-box;
   background: #fff;
   color: var(--ink);
-  font-size: .95rem;
+  font-size: 16px;            /* 16px = pas de zoom auto sur iOS */
+  min-height: var(--touch);
   transition: border-color .15s, box-shadow .15s;
 }
 input[type=number]:focus, select:focus, input[type=text]:focus {
@@ -134,54 +125,58 @@ input[type=number]:focus, select:focus, input[type=text]:focus {
 }
 select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230e8b9c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%230e8b9c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right .75rem center;
-  padding-right: 2.2rem;
+  background-position: right .85rem center;
+  padding-right: 2.4rem;
 }
 
-.text-sm { font-size: .85rem; line-height: 1.3rem; }
+.text-sm { font-size: .9rem; line-height: 1.35rem; }
 .text-gray-500 { color: var(--muted); }
 .text-gray-600 { color: var(--muted); }
-.mt-1 { margin-top: .3rem; }
-p.text-gray-500:empty { margin: 0; }
+.mt-1 { margin-top: .35rem; }
+p.text-gray-500:empty { margin: 0; display: none; }
 
-/* Astuce contextuelle (les petits conseils bleus) */
+/* Astuce contextuelle */
 p.text-sm.text-gray-500:not(:empty) {
   background: var(--sable);
   border-left: 3px solid #f4c15a;
-  padding: .5rem .7rem;
+  padding: .55rem .75rem;
   border-radius: 8px;
   color: #7a5a1e;
 }
 
-/* ---------- Cases à cocher ---------- */
+/* ---------- Cases à cocher (cartes tactiles pleine largeur) ---------- */
 .flex { display: flex; }
 .items-center { align-items: center; }
-.mr-2 { margin-right: .5rem; }
+.mr-2 { margin-right: .6rem; }
 .flex-col { flex-direction: column; }
 .gap-2 { gap: .6rem; }
 
 .flex.items-center {
   background: var(--lagon-50);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: .55rem .7rem;
+  border-radius: 12px;
+  padding: .7rem .8rem;
+  min-height: var(--touch);
   transition: border-color .15s, background .15s;
 }
 .flex.items-center:has(input:checked) {
   background: var(--lagon-100);
   border-color: var(--lagon-400);
 }
-.flex.items-center label { cursor: pointer; font-weight: 500; }
+.flex.items-center label { cursor: pointer; font-weight: 500; line-height: 1.25; }
 input[type=checkbox], input[type=radio] {
   accent-color: var(--lagon-500);
-  width: 1.1rem;
-  height: 1.1rem;
-  margin-bottom: 0;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin: 0;
   cursor: pointer;
   flex-shrink: 0;
 }
+
+/* ---------- Grille des activités (mobile: 1 colonne) ---------- */
+.grid.grid-cols-2.gap-2 { grid-template-columns: 1fr; }
 
 /* ---------- Carte "Budget total" ---------- */
 .bg-blue-100 {
@@ -191,34 +186,19 @@ input[type=checkbox], input[type=radio] {
 }
 .bg-blue-100 .text-xl,
 .bg-blue-100 .text-gray-600 { color: rgba(255, 255, 255, .92) !important; }
-.text-4xl {
-  font-size: 2.75rem;
-  line-height: 1.1;
-  letter-spacing: -1px;
-  margin: .35rem 0 .15rem;
-}
+.text-4xl { font-size: 2.3rem; line-height: 1.1; letter-spacing: -1px; margin: .35rem 0 .15rem; }
 .bg-blue-100 .text-blue-700 { color: #fff; padding-left: 0; }
 .bg-blue-100 .text-blue-700::before { display: none; }
 .mt-2 { margin-top: .5rem; }
-
-/* Panneau résultats collant sur desktop */
-@media (min-width: 768px) {
-  .grid > .bg-white:last-child {
-    position: sticky;
-    top: 1.25rem;
-    align-self: start;
-  }
-}
 
 /* ---------- Détail du budget ---------- */
 .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0; }
 .border-b { border-bottom: 1px solid var(--border); }
 .justify-between { justify-content: space-between; }
-.py-2 { padding-top: .7rem; padding-bottom: .7rem; }
+.py-2 { padding-top: .75rem; padding-bottom: .75rem; }
 .flex.justify-between:last-child { border-bottom: none; }
 .flex.justify-between .font-semibold { color: var(--lagon-700); }
-
-.mt-6 { margin-top: 1.75rem; }
+.mt-6 { margin-top: 1.5rem; }
 
 /* Bloc conseils */
 .mt-6 ul.text-sm {
@@ -232,36 +212,75 @@ input[type=checkbox], input[type=radio] {
 .space-y-2 > li { margin-bottom: .5rem; }
 .space-y-2 > li:last-child { margin-bottom: 0; }
 
-/* ---------- Bouton Réinitialiser ---------- */
+/* ---------- Bouton Réinitialiser (pleine largeur sur mobile) ---------- */
 button {
   margin-top: .5rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: .4rem;
   cursor: pointer;
   border: none;
+  min-height: var(--touch);
+  width: 100%;
+  font-size: 1rem;
   transition: transform .08s, background .15s, box-shadow .15s;
 }
 button:active { transform: translateY(1px); }
-.bg-red-500 {
-  background: var(--corail);
-  box-shadow: 0 6px 16px -6px rgba(255, 107, 94, .6);
-}
+.bg-red-500 { background: var(--corail); box-shadow: 0 6px 16px -6px rgba(255, 107, 94, .6); }
 .bg-red-500:hover { background: var(--corail-hover); }
 .text-white { color: #fff; }
-.py-2 { padding-top: .7rem; padding-bottom: .7rem; }
+.py-2 { padding-top: .8rem; padding-bottom: .8rem; }
 .px-4 { padding-left: 1.3rem; padding-right: 1.3rem; }
 
-/* ---------- Grille des activités ---------- */
-.grid.grid-cols-2.gap-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
-/* ---------- Responsive mobile ---------- */
-@media (max-width: 767px) {
-  .grid-cols-1, .grid.grid-cols-2.gap-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-  .p-4 { padding: 1rem; }
-  .mb-6 { margin-bottom: 1.1rem; }
-  .text-3xl { font-size: 1.6rem; }
-  .text-4xl { font-size: 2.2rem; }
-}
-
 .icon { width: 1.25rem; height: 1.25rem; margin-right: .5rem; }
+
+/* ===========================================================
+   Barre de total fixe en bas (MOBILE uniquement)
+   =========================================================== */
+.mobile-total-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .7rem 1.1rem;
+  padding-bottom: calc(.7rem + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(135deg, var(--lagon-700), var(--lagon-500));
+  color: #fff;
+  box-shadow: 0 -6px 20px -8px rgba(11, 111, 126, .5);
+}
+.mtb-info { display: flex; flex-direction: column; line-height: 1.2; }
+.mtb-label { font-size: .78rem; opacity: .9; }
+.mtb-per { font-size: .8rem; opacity: .95; }
+.mtb-value { font-size: 1.5rem; font-weight: 800; letter-spacing: -.5px; white-space: nowrap; }
+
+/* ===========================================================
+   DESKTOP (>= 768px) : enrichissements
+   =========================================================== */
+@media (min-width: 768px) {
+  .max-w-4xl { max-width: 74rem; }
+  .max-w-4xl.p-4 { padding: 1.5rem; padding-bottom: 1.5rem; }
+  .p-4 { padding: 1.5rem; }
+  .bg-white.p-4, .p-4.bg-white { padding: 1.5rem; }
+
+  .text-3xl { font-size: 2.1rem; }
+  .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+  .text-4xl { font-size: 2.75rem; }
+  .mb-6 { margin-bottom: 1.5rem; }
+
+  .md\:grid-cols-2 { grid-template-columns: 1.05fr .95fr; }
+  .gap-6 { gap: 1.75rem; }
+  .grid.grid-cols-2.gap-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* Panneau résultats collant */
+  .grid > .bg-white:last-child { position: sticky; top: 1.25rem; align-self: start; }
+
+  /* Bouton : largeur auto sur desktop */
+  button { width: auto; }
+
+  /* Pas de barre fixe sur desktop */
+  .mobile-total-bar { display: none; }
+}

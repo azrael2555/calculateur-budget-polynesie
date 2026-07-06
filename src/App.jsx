@@ -104,10 +104,21 @@ function App() {
     }
   }
 
-  // Champs numériques
+  // Champs numériques : on autorise le champ vide pendant la saisie
+  // (sinon un 0 « collant » empêche d'effacer et donne « 015 »).
+  // Stocker un vrai nombre supprime aussi les zéros en tête.
   const handleNumber = (e) => {
     const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: parseInt(value) || 0 }))
+    // On ne garde que les chiffres, et on retire les zéros en tête
+    // (« 015 » → « 15 »), tout en gardant un « 0 » seul et le champ vide.
+    let v = value.replace(/[^0-9]/g, '').replace(/^0+(?=\d)/, '')
+    setForm((prev) => ({ ...prev, [name]: v }))
+  }
+
+  // Remet 0 si l'utilisateur laisse un champ vide en quittant
+  const handleBlurNumber = (e) => {
+    const { name, value } = e.target
+    if (value === '') setForm((prev) => ({ ...prev, [name]: 0 }))
   }
 
   const reset = () => setForm(ETAT_INITIAL)
@@ -202,11 +213,11 @@ function App() {
               <h2 className="text-xl font-semibold mb-3 text-blue-700">Informations de base</h2>
               <div className="mb-3">
                 <label className="block mb-1">Nombre de personnes</label>
-                <input type="number" name="participants" value={form.participants} onChange={handleNumber} min="1" className="w-full p-2 border rounded" />
+                <input type="number" name="participants" value={form.participants} onChange={handleNumber} onBlur={handleBlurNumber} min="1" className="w-full p-2 border rounded" />
               </div>
               <div className="mb-3">
                 <label className="block mb-1">Durée du séjour (jours)</label>
-                <input type="number" name="dureeJours" value={form.dureeJours} onChange={handleNumber} min="1" className="w-full p-2 border rounded" />
+                <input type="number" name="dureeJours" value={form.dureeJours} onChange={handleNumber} onBlur={handleBlurNumber} min="1" className="w-full p-2 border rounded" />
               </div>
               <div className="mb-3">
                 <label className="block mb-1">Saison / période du voyage</label>
@@ -269,11 +280,11 @@ function App() {
               </div>
               <div className="mb-3">
                 <label className="block mb-1">Nuits en hébergement standard</label>
-                <input type="number" name="nuitsStandard" value={form.nuitsStandard} onChange={handleNumber} min="0" className="w-full p-2 border rounded" />
+                <input type="number" name="nuitsStandard" value={form.nuitsStandard} onChange={handleNumber} onBlur={handleBlurNumber} min="0" className="w-full p-2 border rounded" />
               </div>
               <div className="mb-3">
                 <label className="block mb-1">Nuits en overwater bungalow</label>
-                <input type="number" name="nuitsOverwater" value={form.nuitsOverwater} onChange={handleNumber} min="0" className="w-full p-2 border rounded" />
+                <input type="number" name="nuitsOverwater" value={form.nuitsOverwater} onChange={handleNumber} onBlur={handleBlurNumber} min="0" className="w-full p-2 border rounded" />
               </div>
             </div>
 
@@ -291,7 +302,7 @@ function App() {
                 <>
                   <div className="mb-3">
                     <label className="block mb-1">Durée de location (jours)</label>
-                    <input type="number" name="joursLocation" value={form.joursLocation} onChange={handleNumber} min="1" className="w-full p-2 border rounded" />
+                    <input type="number" name="joursLocation" value={form.joursLocation} onChange={handleNumber} onBlur={handleBlurNumber} min="1" className="w-full p-2 border rounded" />
                   </div>
                   <div className="mb-3">
                     <label className="block mb-1">Type de véhicule</label>
@@ -336,7 +347,7 @@ function App() {
               </div>
               <div className="mb-3">
                 <label className="block mb-1">Dîners spéciaux/gastronomiques</label>
-                <input type="number" name="dinersSpeciaux" value={form.dinersSpeciaux} onChange={handleNumber} min="0" className="w-full p-2 border rounded" />
+                <input type="number" name="dinersSpeciaux" value={form.dinersSpeciaux} onChange={handleNumber} onBlur={handleBlurNumber} min="0" className="w-full p-2 border rounded" />
               </div>
             </div>
 
@@ -361,7 +372,7 @@ function App() {
               </div>
               <div className="mb-3">
                 <label className="block mb-1">Nombre d'excursions payantes</label>
-                <input type="number" name="excursionsPayantes" value={form.excursionsPayantes} onChange={handleNumber} min="0" className="w-full p-2 border rounded" />
+                <input type="number" name="excursionsPayantes" value={form.excursionsPayantes} onChange={handleNumber} onBlur={handleBlurNumber} min="0" className="w-full p-2 border rounded" />
               </div>
             </div>
 
@@ -381,7 +392,7 @@ function App() {
               </div>
               <div className="mb-3">
                 <label className="block mb-1">Budget souvenirs (€)</label>
-                <input type="number" name="budgetSouvenir" value={form.budgetSouvenir} onChange={handleNumber} min="0" className="w-full p-2 border rounded" />
+                <input type="number" name="budgetSouvenir" value={form.budgetSouvenir} onChange={handleNumber} onBlur={handleBlurNumber} min="0" className="w-full p-2 border rounded" />
               </div>
             </div>
 
@@ -401,7 +412,7 @@ function App() {
               </div>
               <div className="mb-3">
                 <label className="block mb-1">Frais de visa estimés (€)</label>
-                <input type="number" name="fraisVisa" value={form.fraisVisa} onChange={handleNumber} min="0" className="w-full p-2 border rounded" />
+                <input type="number" name="fraisVisa" value={form.fraisVisa} onChange={handleNumber} onBlur={handleBlurNumber} min="0" className="w-full p-2 border rounded" />
               </div>
             </div>
 
@@ -438,7 +449,7 @@ function App() {
               Pour {form.participants} {form.participants > 1 ? 'personnes' : 'personne'}, {form.dureeJours} {form.dureeJours > 1 ? 'jours' : 'jour'}
             </p>
             <p className="text-sm mt-1 text-gray-600">
-              Soit environ {Math.round(budget.total / form.participants).toLocaleString()} € par personne
+              Soit environ {Math.round(budget.total / (parseInt(form.participants) || 1)).toLocaleString()} € par personne
             </p>
           </div>
 
@@ -472,7 +483,7 @@ function App() {
         <div className="mtb-info">
           <span className="mtb-label">Budget total estimé</span>
           <span className="mtb-per">
-            ≈ {Math.round(budget.total / form.participants).toLocaleString()} € / personne
+            ≈ {Math.round(budget.total / (parseInt(form.participants) || 1)).toLocaleString()} € / personne
           </span>
         </div>
         <span className="mtb-value">{budget.total.toLocaleString()} €</span>

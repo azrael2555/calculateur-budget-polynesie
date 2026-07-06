@@ -1,0 +1,6 @@
+node_modules
+dist
+_build_recupere_original
+.DS_Store
+*.local
+.vite

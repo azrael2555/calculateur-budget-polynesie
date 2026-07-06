@@ -165,9 +165,12 @@ function App() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-blue-50 rounded-lg shadow">
-      <h1 className="text-3xl font-bold text-center mb-6 text-blue-800">
-        Calculateur de Budget - Voyage en Polynésie Française
+      <h1 className="text-3xl font-bold text-center text-blue-800">
+        🏝️ Calculateur de Budget — Voyage en Polynésie Française
       </h1>
+      <p className="text-center text-gray-600 mb-6" style={{ marginTop: '.4rem' }}>
+        Estimez le coût de votre voyage en quelques clics
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* ===== Formulaire ===== */}

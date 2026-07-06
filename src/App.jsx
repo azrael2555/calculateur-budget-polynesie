@@ -41,6 +41,23 @@ const PRIX = {
   },
 }
 
+// Coefficients saisonniers appliqués aux vols et à l'hébergement.
+// Saison sèche = haute saison (plus chère), saison humide = basse saison.
+const SAISON = {
+  seche: {
+    label: 'Saison sèche — mai à octobre (haute saison)',
+    vol: 1.15,
+    hebergement: 1.1,
+    note: 'Saison sèche : de mai à octobre (hiver austral). Haute saison, météo idéale mais vols et hébergements plus chers.',
+  },
+  humide: {
+    label: 'Saison humide — novembre à avril (basse saison)',
+    vol: 0.85,
+    hebergement: 0.9,
+    note: 'Saison humide : de novembre à avril (été austral). Plus chaude et pluvieuse, mais vols et hébergements moins chers.',
+  },
+}
+
 const ETAT_INITIAL = {
   participants: 2,
   dureeJours: 10,
@@ -53,6 +70,7 @@ const ETAT_INITIAL = {
   locationVoiture: 'Non',
   joursLocation: 0,
   typeVehicule: 'Compact',
+  saison: 'seche',
   transfertsInterIles: 'Bateau',
   restauration: 'Moyen',
   dinersSpeciaux: 0,
@@ -96,17 +114,20 @@ function App() {
 
   useEffect(() => {
     const t = form
+    const coefSaison = SAISON[t.saison]
 
-    // Transport aérien
+    // Transport aérien (ajusté selon la saison)
     let transport = 0
     if (t.typeVol !== 'Je recherche déjà un billet') {
       transport = PRIX.vol[t.departDepuis][t.classeVol] * t.participants
       if (t.typeVol === 'Aller simple') transport *= 0.6
+      transport *= coefSaison.vol
     }
 
-    // Hébergement
+    // Hébergement (ajusté selon la saison)
     let hebergement = PRIX.hebergement[t.typeHebergement] * t.nuitsStandard * t.participants
     hebergement += PRIX.overwaterBungalow * t.nuitsOverwater * t.participants
+    hebergement *= coefSaison.hebergement
 
     // Transport local
     let transportLocal = 0
@@ -186,6 +207,14 @@ function App() {
               <div className="mb-3">
                 <label className="block mb-1">Durée du séjour (jours)</label>
                 <input type="number" name="dureeJours" value={form.dureeJours} onChange={handleNumber} min="1" className="w-full p-2 border rounded" />
+              </div>
+              <div className="mb-3">
+                <label className="block mb-1">Saison / période du voyage</label>
+                <select name="saison" value={form.saison} onChange={handleChange} className="w-full p-2 border rounded">
+                  <option value="seche">{SAISON.seche.label}</option>
+                  <option value="humide">{SAISON.humide.label}</option>
+                </select>
+                <p className="text-sm text-gray-500 mt-1">{SAISON[form.saison].note}</p>
               </div>
             </div>
 
